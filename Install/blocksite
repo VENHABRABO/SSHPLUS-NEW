@@ -1,0 +1,481 @@
+#!/bin/bash
+
+#
+
+menu(){
+
+FILE=sites.cake
+
+if [ -f "$FILE" ]; then
+
+clear
+
+else
+
+touch sites.cake
+
+fi
+
+black='\033[0;30m'
+
+red='\033[0;31m'
+
+green='\033[0;32m'
+
+browno='\033[0;33m'
+
+blue='\033[0;34m'
+
+purple='\033[0;35m'
+
+cyan='\033[0;36m'
+
+lightgray='\033[0;37m'
+
+darkgray='\033[1;30m'
+
+lightred='\033[1;31m'
+
+lightgreen='\033[1;32m'
+
+yellow='\033[1;33m'
+
+lightblue='\033[1;34m'
+
+lightpurple='\033[1;35m'
+
+lightcyan='\033[1;36m'
+
+white='\033[1;37m'
+
+clear
+
+echo -e "\033[1;31m /////////// { BLOQUEADOR WEB } /////////// "
+
+echo -e "\033[1;33m BLOQUEIO PARA TUNELAMENTO SSH (VPN) "
+
+echo -e "\033[01;34m============================================================"
+
+echo -e "\033[1;33m USE AS STRING COMO \033[1;37m(www.google.com) \033[1;33mPARA BLOQUEAR!"
+
+echo -e "\033[01;34m============================================================"
+
+echo -e "\033[1;33m DEV  {} \033[1;37mConfigMods >>> @ConfigMods <<<"
+
+echo -e "\033[01;34m============================================================"
+
+echo -e "\033[1;33m EDIT {} \033[1;37mConfigMods >>> @ConfigMods <<<"
+
+echo -e "\033[01;34m============================================================"
+
+echo -e "\033[1;33m EDIT {} \033[1;37mConfigMods >>> @ConfigMods<<<"
+
+echo -e "\033[01;34m============================================================"
+
+tput setaf 7 ; tput bold ; printf '%s' "[01 •] >"; tput setaf 3 ; printf '%s' " BLOQUEAR SITE."  ; echo ""
+
+tput setaf 7 ; tput bold ; printf '%s' "[02 •] >"; tput setaf 3 ; printf '%s' " DESBLOQUEAR SITE." ;  echo ""
+
+tput setaf 7 ; tput bold ; printf '%s' "[03 •] >"; tput setaf 3 ; printf '%s' " DESBLOQUEAR TODOS OS SITES." ;  echo ""
+
+tput setaf 7 ; tput bold ; printf '%s' "[04 •] >"; tput setaf 3 ; printf '%s' " VISUALIZAR LISTA BLOQUEADA." ;  echo ""
+
+tput setaf 7 ; tput bold ; printf '%s' "[00 •] >"; tput setaf 3 ; printf '%s' " VOLTAR AO MENU ANTERIOR." ;  echo ""
+
+echo -e "\033[01;34m============================================================"
+
+echo -ne "\033[1;37m[ESCOLHA UM NUMERO]\033[1;37m: "; read opcao
+
+case $opcao in
+
+	01|1) block ;;
+
+	02|2) unblock ;;
+
+	03|3) unblockall ;;
+
+	04|4) view ;;
+
+        00|0) bash menu ;;
+
+        *)
+
+menu
+
+esac
+
+}
+
+menu
+
+block(){
+
+clear
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 7 ; printf '%s' " { BLOQUEAR SITE } " ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+echo -e "\033[01;34m============================================================"
+
+tput setaf 7 ; tput bold ; printf '%s' "[01 •] >"; tput setaf 3 ; printf '%s' " BLOQUEAR SITE."  ; echo ""
+
+tput setaf 7 ; tput bold ; printf '%s' "[02 •] >"; tput setaf 3 ; printf '%s' " VOLTAR AO MENU."  ; echo ""
+
+echo -e "\033[01;34m============================================================"
+
+echo -ne "\033[1;37m[ESCOLHA UM NUMERO]\033[1;37m: "; read option
+
+if [ "$option" = "1" ]; then 
+
+clear
+
+echo ""
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 7 ; printf '%s' " { DIGITE O SITE } " ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+echo ""
+
+echo -e "\033[1;37mINSIRA O SITE:"
+
+echo ""
+
+read website
+
+if [ -z $website ]; then
+
+clear
+
+echo ""
+
+echo -e "\033[1;31mOPS! ESTA VAZIO. DIGITE UM SITE REAL, \033[1;37mEX; (www.google.com)"
+
+echo ""
+
+sleep 5s
+
+block
+
+else
+
+clear
+
+cat sites.cake | grep $website && site=1 || site=0
+
+clear
+
+if [ "$site" = "1" ]; then
+
+clear
+
+echo ""
+
+echo ""
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 7 ; printf '%s' " { DIGITE O SITE } " ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+echo ""
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 3 ; printf '%s' "O SITE ( $website ) JA ESTA BLOQUEADO!" ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+sleep 5s
+
+block
+
+elif [ "$site" = "0" ]; then
+
+iptables -A INPUT -s $website -j DROP && iptables -A FORWARD -s $website  -j DROP
+
+echo "$website" >> sites.cake
+
+clear
+
+echo ""
+
+echo ""
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 2 ; printf '%s' "SITE BLOQUEADO!: $website" ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+sleep 5s
+
+block
+
+else
+
+clear
+
+echo "VIOLADO!"
+
+sleep 5s
+
+block
+
+fi
+
+fi
+
+elif [ "$option" = "2" ]; then
+
+menu
+
+else
+
+clear
+
+tput setaf 7 ; tput setab 4 ; tput bold ; printf '%30s%s%-10s\n' "APENAS 1 OU 2" ; tput sgr0 ; echo ""
+
+sleep 5s
+
+block
+
+fi
+
+}
+
+unblock(){
+
+clear
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 7 ; printf '%s' " { DESBLOQUEAR SITE } " ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+echo -e "\033[01;34m============================================================"
+
+tput setaf 7 ; tput bold ; printf '%s' "[01 •] >"; tput setaf 3 ; printf '%s' " DESBLOQUEAR SITE."  ; echo ""
+
+tput setaf 7 ; tput bold ; printf '%s' "[02 •] >"; tput setaf 3 ; printf '%s' " VOLTAR AO MENU."  ; echo ""
+
+echo -e "\033[01;34m============================================================"
+
+echo -ne "\033[1;37m[ESCOLHA UM NUMERO]\033[1;37m: "; read option
+
+if [ "$option" = "1" ]; then
+
+clear
+
+echo ""
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 7 ; printf '%s' " { DIGITE O SITE } " ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+echo ""
+
+echo -e "\033[1;37mINSIRA O SITE:"
+
+echo ""
+
+read website
+
+if [ -z $website ]; then
+
+clear
+
+echo ""
+
+echo -e "\033[1;31mOPS! ESTA VAZIO. DIGITE UM SITE REAL, \033[1;37mEX; (www.google.com)"
+
+echo ""
+
+sleep 5s
+
+unblock
+
+else
+
+clear
+
+cat sites.cake | grep $website && site=1 || site=0
+
+clear
+
+if [ "$site" = "0" ]; then
+
+clear
+
+echo ""
+
+echo ""
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 3 ; printf '%s' "O SITE ( $website ) JA ESTA DESBLOQUEADO!" ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+sleep 5s
+
+unblock
+
+elif [ "$site" = "1" ]; then
+
+iptables -D INPUT -s $website -j DROP && iptables -D FORWARD -s $website  -j DROP
+
+grep -v "$website" sites.cake > temp && mv temp sites.cake
+
+clear
+
+echo ""
+
+echo ""
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 2 ; printf '%s' "SITE DESBLOQUEADO!: $website" ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+sleep 5s
+
+unblock
+
+else
+
+clear
+
+echo "VIOLADO!"
+
+sleep 5s
+
+unblock
+
+fi
+
+fi
+
+elif [ "$option" = "2" ]; then
+
+menu
+
+else
+
+clear
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 7 ; printf '%s' " { APENAS 1 OU 2 ! } " ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+sleep 5s
+
+unblock
+
+fi
+
+}
+
+view()
+
+{
+
+clear
+
+echo ""
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 7 ; printf '%s' " { SITE BLOQUEADOS } " ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+echo -e "\033[01;34m============================================================"
+
+printf "${yellow}"
+
+cat sites.cake
+
+printf "${white}"
+
+echo -e "\033[01;34m============================================================"
+
+tput setaf 7 ; tput setab 4 ; tput bold ; printf '%30s%s%-10s\n' "ENTER PARA VOLTAR AO MENU!" ; tput sgr0 ; echo ""
+
+read cake
+
+menu
+
+}
+
+unblockall()
+
+{
+
+FILE=sites.cake
+
+if [ -f "$FILE" ]; then
+
+clear
+
+else
+
+touch sites.cake
+
+fi
+
+clear
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 7 ; printf '%s' " { DESBLOQUEAR } " ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+echo -e "\033[01;34m============================================================"
+
+tput setaf 7 ; tput bold ; printf '%s' "[01 •] >"; tput setaf 3 ; printf '%s' " DESBLOQUEAR TODOS OS SITE."  ; echo ""
+
+tput setaf 7 ; tput bold ; printf '%s' "[02 •] >"; tput setaf 3 ; printf '%s' " VOLTAR AO MENU."  ; echo ""
+
+echo -e "\033[01;34m============================================================"
+
+echo -ne "\033[1;37m[ESCOLHA UM NUMERO]\033[1;37m: "; read option
+
+if [ "$option" = "1" ]; then 
+
+clear
+
+tput setaf 7 ; tput setab 1 ; tput bold ; printf '%30s%s%-10s\n' "ISSO IRA REMOVER TODAS AS REGRAS DE BLOQUEIO!" ; tput sgr0 ;
+
+echo ""
+
+tput setaf 7 ; tput setab 1 ; tput bold ; printf '%30s%s%-10s\n' "DESEJAR REALMENTE CONTINUAR ?" ; tput sgr0 ;
+
+echo ""
+
+tput setaf 7 ; tput setab 1 ; tput bold ; printf '%30s%s%-10s\n' "SIM/NAO" ; tput sgr0 ;
+
+echo ""
+
+echo -e "\033[1;37mDIGITE SUA RESPOSTA: "
+
+echo ""
+
+read option2
+
+if [ "$option2" = "SIM" ]; then 
+
+clear
+
+iptables -F
+
+tput setaf 7 ; tput setab 4 ; tput bold ; printf '%30s%s%-10s\n' "FEITO !" ; tput sgr0 ; echo ""
+
+rm -f sites.cake
+
+sleep 5s
+
+unblockall
+
+elif [ "$option2" = "NAO" ]; then 
+
+unblockall
+
+else
+
+clear
+
+tput setaf 7 ; tput setab 4 ; tput bold ; printf '%30s%s%-10s\n' "APENAS SIM OU NAO" ; tput sgr0 ; echo ""
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 7 ; printf '%s' " { APENAS SIM OU NAO ! } " ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+sleep 5s
+
+unblockall
+
+fi
+
+elif [ "$option" = "2" ]; then 
+
+menu
+
+else
+
+clear
+
+tput setaf 2 ; tput bold ; printf '%s' "|*|"; tput setaf 7 ; printf '%s' " { APENAS 1 OU 2 ! } " ; tput setaf 2 ; tput bold ; printf '%s' "|*|"; echo ""
+
+sleep 5s
+
+unblockall
+
+fi
+
+}
+
+menu
