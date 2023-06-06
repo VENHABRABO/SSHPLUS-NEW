@@ -229,5 +229,5 @@ echo -e ""
 echo -e "             \033[1;37m • \033[1;32mINSTALAÇÃO CONCLUÍDA\033[1;37m • \033[0m"
 echo -e ""
 echo -e "\033[1;31m \033[1;37mCOMANDO PRINCIPAL: \033[1;32mmenu\033[0m"
-echo -e "\033[1;37m MAIS INFORMACOES \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37m@Niltonjuniornzx\033[0m"
+echo -e "\033[1;37m MAIS INFORMACOES \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37m@VEM_BRABO\033[0m"
 
